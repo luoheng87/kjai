@@ -12,6 +12,9 @@ export const TOGGLE_TOP_OFFSET = 18;
 /** 简单页（登录等）内容区最大宽度 */
 export const SITE_CONTAINER_CLASS = "mx-auto w-full max-w-[1600px] px-4 lg:px-6";
 
+/** 顶栏搜索框宽度（适中，参照 Reddit 约 560–600px） */
+export const HEADER_SEARCH_WIDTH = 580;
+
 /** Feed 页左右内边距，与顶栏对齐 */
 export const SITE_PAGE_GUTTER = "px-4 lg:px-6";
 
