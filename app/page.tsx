@@ -19,6 +19,7 @@ import { getPublishedArticles } from "@/lib/data/media";
 import { getUpcomingEvents } from "@/lib/data/events";
 import { getHotTools } from "@/lib/data/tools";
 import { NAV_ITEMS, SITE_DESCRIPTION, SITE_NAME } from "@/lib/constants";
+import { articleHref } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: SITE_NAME,
@@ -122,7 +123,7 @@ export default async function HomePage() {
             <h2 className="text-2xl font-bold text-slate-900">最新资讯</h2>
             <div className="mt-6 space-y-4">
               {articles.map((article) => (
-                <Link key={article.id} href={`/media/${article.slug}`}>
+                <Link key={article.id} href={articleHref(article.slug)}>
                   <Card className="transition-shadow hover:shadow-md">
                     <CardContent className="p-5">
                       <div className="flex items-center gap-2">

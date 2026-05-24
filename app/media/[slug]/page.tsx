@@ -5,15 +5,18 @@ import { Badge } from "@/components/ui/badge";
 import { auth, isVip } from "@/lib/auth";
 import { getArticleBySlug, getArticleMetaBySlug } from "@/lib/data/media";
 import { ARTICLE_PREVIEW_RATIO, SITE_NAME } from "@/lib/constants";
+import { normalizeArticleSlug } from "@/lib/utils";
 
-export const revalidate = 3600;
+export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function MediaDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = normalizeArticleSlug(rawSlug);
   const article = await getArticleBySlug(slug);
   if (!article) notFound();
 
@@ -62,8 +65,8 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const article = await getArticleMetaBySlug(slug);
+  const { slug: rawSlug } = await params;
+  const article = await getArticleMetaBySlug(normalizeArticleSlug(rawSlug));
   return {
     title: article ? `${article.title} | ${SITE_NAME}` : SITE_NAME,
     description: article?.excerpt ?? undefined,

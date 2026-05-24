@@ -5,7 +5,7 @@ import { ArticleForm } from "@/components/dashboard/article-form";
 import { MemberActionButton } from "@/components/dashboard/member-action-button";
 import { auth } from "@/lib/auth";
 import { getMemberArticles } from "@/lib/member/data";
-import { formatDate } from "@/lib/utils";
+import { formatDate, articleHref } from "@/lib/utils";
 
 export default async function DashboardArticlesPage() {
   const session = await auth();
@@ -31,7 +31,7 @@ export default async function DashboardArticlesPage() {
               >
                 <div className="min-w-0 flex-1">
                   {article.publishedAt ? (
-                    <Link href={`/media/${article.slug}`} className="font-medium text-slate-900 hover:text-indigo-600">
+                    <Link href={articleHref(article.slug)} className="font-medium text-slate-900 hover:text-indigo-600">
                       {article.title}
                     </Link>
                   ) : (

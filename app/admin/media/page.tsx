@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AdminActionButton } from "@/components/admin/admin-action-button";
 import { ArticleForm } from "@/components/admin/article-form";
 import { getArticlesAdmin } from "@/lib/data/admin";
-import { formatDate } from "@/lib/utils";
+import { formatDate, articleHref } from "@/lib/utils";
 
 export default async function AdminMediaPage() {
   const articles = await getArticlesAdmin();
@@ -51,7 +51,7 @@ export default async function AdminMediaPage() {
                       />
                     )}
                     {article.publishedAt && (
-                      <Link href={`/media/${article.slug}`} target="_blank" className="text-sm text-indigo-600 hover:underline">
+                      <Link href={articleHref(article.slug)} target="_blank" className="text-sm text-indigo-600 hover:underline">
                         预览
                       </Link>
                     )}

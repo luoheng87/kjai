@@ -4,7 +4,7 @@ import { SiteShell } from "@/components/layout/site-shell";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { getPublishedArticles } from "@/lib/data/media";
-import { formatDate } from "@/lib/utils";
+import { formatDate, articleHref } from "@/lib/utils";
 import { SITE_NAME } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -28,7 +28,7 @@ export default async function MediaPage() {
         ) : (
           <div className="mt-8 space-y-4">
             {articles.map((article) => (
-              <Link key={article.id} href={`/media/${article.slug}`}>
+              <Link key={article.id} href={articleHref(article.slug)}>
                 <Card className="transition-shadow hover:shadow-md">
                   <CardContent className="p-5">
                     <div className="flex items-center gap-2">

@@ -44,9 +44,15 @@ export async function PATCH(request: Request) {
   try {
     const { id, ...data } = await request.json();
     if (!id) return NextResponse.json({ error: "缺少 ID" }, { status: 400 });
+
+    const updates: Record<string, unknown> = { ...data, updatedAt: new Date() };
+    if (typeof data.publishedAt === "string") {
+      updates.publishedAt = new Date(data.publishedAt);
+    }
+
     await requireDb()
       .update(articles)
-      .set({ ...data, updatedAt: new Date() })
+      .set(updates)
       .where(eq(articles.id, id));
     revalidateFrontend();
     return NextResponse.json({ success: true });
