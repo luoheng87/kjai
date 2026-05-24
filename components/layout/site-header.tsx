@@ -14,7 +14,7 @@ import {
 import { SITE_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { SITE_CONTAINER_CLASS } from "@/components/layout/site-container";
+import { SITE_PAGE_GUTTER } from "@/components/layout/site-container";
 import { SiteLeftSidebar } from "@/components/layout/site-left-sidebar";
 
 export function SiteHeader() {
@@ -25,7 +25,7 @@ export function SiteHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-slate-300/80 bg-white">
-        <div className={cn("flex h-12 items-center gap-3", SITE_CONTAINER_CLASS)}>
+        <div className={cn("flex h-12 w-full items-center gap-3", SITE_PAGE_GUTTER)}>
           <button
             type="button"
             className="rounded-full p-2 text-slate-700 hover:bg-slate-100 lg:hidden"
@@ -42,7 +42,7 @@ export function SiteHeader() {
             <span className="hidden font-bold text-slate-900 sm:inline">{SITE_NAME}</span>
           </Link>
 
-          <form action="/directory" className="hidden min-w-0 flex-1 md:block md:max-w-xl">
+          <form action="/directory" className="hidden min-w-0 flex-1 md:block">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input

@@ -1,7 +1,6 @@
 import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
-import { SiteLeftSidebar } from "@/components/layout/site-left-sidebar";
-import { SiteRightSidebar } from "@/components/layout/site-right-sidebar";
+import { SiteFeedLayout } from "@/components/layout/site-feed-layout";
 import { SiteContainer } from "@/components/layout/site-container";
 
 export function SiteShell({
@@ -26,23 +25,7 @@ export function SiteShell({
   return (
     <>
       <SiteHeader />
-      <SiteContainer className="py-4">
-        <div className="flex min-h-[calc(100dvh-3rem)]">
-          <aside className="hidden w-[240px] shrink-0 self-stretch border-r border-slate-200 lg:block">
-            <div className="sticky top-12 py-2 pr-4">
-              <SiteLeftSidebar />
-            </div>
-          </aside>
-
-          <main className="min-w-0 flex-1 lg:pl-6">{children}</main>
-
-          <aside className="hidden w-[312px] shrink-0 self-stretch xl:block xl:pl-6">
-            <div className="sticky top-12 py-2">
-              <SiteRightSidebar />
-            </div>
-          </aside>
-        </div>
-      </SiteContainer>
+      <SiteFeedLayout>{children}</SiteFeedLayout>
       <SiteFooter />
     </>
   );
