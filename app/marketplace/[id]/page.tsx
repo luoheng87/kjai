@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { SiteShell } from "@/components/layout/site-shell";
-import { Badge } from "@/components/ui/badge";
+import { FeedDetailCard } from "@/components/feed/feed-detail-card";
 import { ContactReveal } from "@/components/marketplace/contact-reveal";
 import { getListingById } from "@/lib/data/marketplace";
 import { formatDate } from "@/lib/utils";
@@ -20,36 +19,37 @@ export default async function MarketplaceDetailPage({
 
   return (
     <SiteShell>
-      <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
-        <Link href="/marketplace" className="text-sm text-indigo-600 hover:underline">
-          ← 返回服务市场
-        </Link>
-        <div className="mt-4 flex items-center gap-2">
-          <Badge variant={listing.type === "demand" ? "default" : "success"}>
-            {listing.type === "demand" ? "需求" : "服务"}
-          </Badge>
-          <span className="text-sm text-slate-400">{listing.authorName ?? "匿名"}</span>
-        </div>
-        <h1 className="mt-2 text-2xl font-bold text-slate-900">{listing.title}</h1>
-        <p className="mt-4 leading-relaxed text-slate-600">{listing.description}</p>
+      <FeedDetailCard
+        backHref="/marketplace"
+        backLabel="返回服务市场"
+        community="服务市场"
+        communityHref="/marketplace"
+        author={listing.authorName}
+        time={formatDate(listing.createdAt)}
+        title={listing.title}
+        badge={listing.type === "demand" ? "需求" : "服务"}
+        badgeVariant={listing.type === "demand" ? "default" : "success"}
+      >
+        <p className="leading-relaxed text-slate-600">{listing.description}</p>
         <div className="mt-4 flex flex-wrap gap-4 text-sm text-slate-500">
           {listing.budget && <span>预算：{listing.budget}</span>}
           {listing.deliveryTime && <span>交付：{listing.deliveryTime}</span>}
-          <span>{formatDate(listing.createdAt)}</span>
         </div>
 
-        <div className="mt-8 rounded-xl border border-slate-200 bg-slate-50 p-5">
-          <h2 className="font-semibold text-slate-900">联系方式</h2>
-          <p className="mt-1 text-sm text-slate-500">登录后可查看，普通用户每日 3 次免费</p>
-          <div className="mt-4">
+        <div className="mt-6 rounded-md border border-slate-200 bg-slate-50 p-4">
+          <h2 className="text-sm font-bold text-slate-900">联系方式</h2>
+          <p className="mt-1 text-xs text-slate-500">
+            登录后可查看，普通用户每日 3 次免费
+          </p>
+          <div className="mt-3">
             <ContactReveal listingId={listing.id} />
           </div>
         </div>
 
-        <p className="mt-6 text-xs text-slate-400">
+        <p className="mt-4 text-xs text-slate-400">
           免责声明：平台仅提供信息撮合，不参与线下交易与资金担保。
         </p>
-      </div>
+      </FeedDetailCard>
     </SiteShell>
   );
 }

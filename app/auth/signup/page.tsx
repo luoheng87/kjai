@@ -38,7 +38,7 @@ export default function SignUpPage() {
   }
 
   return (
-    <SiteShell>
+    <SiteShell variant="simple">
       <div className="mx-auto flex max-w-md flex-col px-4 py-16">
         <Card>
           <CardHeader>

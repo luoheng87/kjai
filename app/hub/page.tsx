@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteShell } from "@/components/layout/site-shell";
-import { ToolCard } from "@/components/tools/tool-card";
-import { Button } from "@/components/ui/button";
+import { FeedCard } from "@/components/feed/feed-card";
+import { FeedSortTabs } from "@/components/feed/feed-sort-tabs";
 import { getApprovedTools } from "@/lib/data/tools";
 import { SITE_NAME } from "@/lib/constants";
 
@@ -18,24 +18,36 @@ export default async function HubPage() {
 
   return (
     <SiteShell>
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900">AI 工具商店</h1>
-            <p className="mt-2 text-slate-500">
-              厂商自主上架，展示核心痛点、教程与优惠码，点击跳转第三方平台
-            </p>
-          </div>
-          <Link href="/vendor">
-            <Button variant="outline">厂商申请上架</Button>
-          </Link>
+      <div className="mb-3 flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2">
+        <div>
+          <h1 className="text-lg font-bold text-slate-900">r/工具商店</h1>
+          <p className="text-xs text-slate-500">厂商上架与优惠码</p>
         </div>
+        <Link
+          href="/vendor"
+          className="rounded-full border border-slate-300 px-4 py-1.5 text-sm font-bold text-slate-700 hover:bg-slate-50"
+        >
+          厂商上架
+        </Link>
+      </div>
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {tools.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} />
-          ))}
-        </div>
+      <FeedSortTabs />
+
+      <div className="space-y-3">
+        {tools.map((tool) => (
+          <FeedCard
+            key={tool.id}
+            href={`/hub/${tool.slug}`}
+            community="工具商店"
+            communityHref="/hub"
+            time={`${tool.clickCount} 次点击`}
+            title={tool.name}
+            body={tool.tagline ?? undefined}
+            voteScore={tool.likeCount}
+            badge={tool.isFeatured ? "精选" : tool.promoCode ? `码: ${tool.promoCode}` : undefined}
+            badgeVariant="warning"
+          />
+        ))}
       </div>
     </SiteShell>
   );

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/layout/site-shell";
+import { FeedDetailCard } from "@/components/feed/feed-detail-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -37,17 +38,21 @@ export default async function HubDetailPage({
 
   return (
     <SiteShell>
-      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="flex items-start gap-6">
-          <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-indigo-50 text-2xl font-bold text-indigo-600">
+      <FeedDetailCard
+        backHref="/hub"
+        backLabel="返回工具商店"
+        community="工具商店"
+        communityHref="/hub"
+        title={tool.name}
+        voteScore={tool.likeCount}
+        badge={tool.categoryName ?? undefined}
+      >
+        <div className="flex items-start gap-4">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-md bg-orange-50 text-xl font-bold text-orange-600">
             {tool.name.charAt(0)}
           </div>
-          <div className="flex-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-3xl font-bold text-slate-900">{tool.name}</h1>
-              {tool.categoryName && <Badge variant="secondary">{tool.categoryName}</Badge>}
-            </div>
-            <p className="mt-2 text-lg text-slate-600">{tool.tagline}</p>
+          <div>
+            <p className="text-sm text-slate-600 sm:text-base">{tool.tagline}</p>
             {tool.priceRange && (
               <p className="mt-2 text-sm text-slate-500">价格区间：{tool.priceRange}</p>
             )}
@@ -55,11 +60,11 @@ export default async function HubDetailPage({
         </div>
 
         {tool.promoCode && (
-          <Card className="mt-8 border-amber-200 bg-amber-50">
-            <CardContent className="flex items-center justify-between p-5">
+          <Card className="mt-4 border-amber-200 bg-amber-50">
+            <CardContent className="flex items-center justify-between p-4">
               <div>
-                <p className="font-semibold text-amber-900">本站专属优惠码</p>
-                <p className="mt-1 font-mono text-2xl text-amber-700">{tool.promoCode}</p>
+                <p className="text-sm font-semibold text-amber-900">本站专属优惠码</p>
+                <p className="mt-1 font-mono text-xl text-amber-700">{tool.promoCode}</p>
               </div>
               <Badge variant="warning">限时有效</Badge>
             </CardContent>
@@ -67,14 +72,18 @@ export default async function HubDetailPage({
         )}
 
         <div
-          className="prose prose-slate mt-8 max-w-none"
+          className="prose prose-slate mt-6 max-w-none text-sm sm:text-base"
           dangerouslySetInnerHTML={{
             __html: tool.content ?? `<p>${tool.description ?? tool.tagline}</p>`,
           }}
         />
 
-        <div className="mt-10 flex flex-wrap gap-3">
-          <Link href={`/go/${tool.id}?url=${encodeURIComponent(visitUrl)}`} target="_blank" rel="noopener noreferrer">
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href={`/go/${tool.id}?url=${encodeURIComponent(visitUrl)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <Button size="lg">
               立即使用
               <ExternalLink className="h-4 w-4" />
@@ -86,7 +95,7 @@ export default async function HubDetailPage({
             </Button>
           </Link>
         </div>
-      </div>
+      </FeedDetailCard>
     </SiteShell>
   );
 }

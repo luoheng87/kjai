@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteShell } from "@/components/layout/site-shell";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { FeedCard } from "@/components/feed/feed-card";
+import { FeedCreateBar } from "@/components/feed/feed-create-bar";
+import { FeedSortTabs } from "@/components/feed/feed-sort-tabs";
 import { getPublishedPosts } from "@/lib/data/community";
 import { formatDate } from "@/lib/utils";
 import { SITE_NAME } from "@/lib/constants";
@@ -19,50 +20,45 @@ export default async function CommunityPage() {
 
   return (
     <SiteShell>
-      <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-slate-900">论坛社区</h1>
-            <p className="mt-2 text-slate-500">分享经验、提问答疑，支持标签分类</p>
-          </div>
-          <Link
-            href="/community/new"
-            className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700"
-          >
-            发帖
-          </Link>
+      <div className="mb-3 flex items-center justify-between rounded-md border border-slate-200 bg-white px-3 py-2">
+        <div>
+          <h1 className="text-lg font-bold text-slate-900">r/论坛</h1>
+          <p className="text-xs text-slate-500">{posts.length} 篇帖子</p>
         </div>
-
-        {posts.length === 0 ? (
-          <p className="mt-12 text-center text-slate-500">暂无帖子，来发布第一个话题吧。</p>
-        ) : (
-          <div className="mt-8 space-y-4">
-            {posts.map((post) => (
-              <Link key={post.id} href={`/community/${post.id}`}>
-                <Card className="transition-shadow hover:shadow-md">
-                  <CardContent className="p-5">
-                    <h2 className="text-lg font-semibold text-slate-900">{post.title}</h2>
-                    <p className="mt-2 line-clamp-2 text-sm text-slate-500">{post.content}</p>
-                    <div className="mt-3 flex flex-wrap items-center gap-2">
-                      {post.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                    <div className="mt-3 flex gap-4 text-xs text-slate-400">
-                      <span>{post.authorName ?? "匿名"}</span>
-                      <span>{formatDate(post.createdAt)}</span>
-                      <span>{post.likeCount} 赞</span>
-                      <span>{post.commentCount} 评论</span>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
-          </div>
-        )}
+        <Link
+          href="/community/new"
+          className="rounded-full bg-orange-500 px-4 py-1.5 text-sm font-bold text-white hover:bg-orange-600"
+        >
+          发帖
+        </Link>
       </div>
+
+      <FeedCreateBar />
+      <FeedSortTabs />
+
+      {posts.length === 0 ? (
+        <div className="rounded-md border border-slate-200 bg-white p-8 text-center text-sm text-slate-500">
+          暂无帖子，来发布第一个话题吧。
+        </div>
+      ) : (
+        <div className="space-y-3">
+          {posts.map((post) => (
+            <FeedCard
+              key={post.id}
+              href={`/community/${post.id}`}
+              community="论坛"
+              communityHref="/community"
+              author={post.authorName ?? "匿名"}
+              time={formatDate(post.createdAt)}
+              title={post.title}
+              body={post.content}
+              voteScore={post.likeCount}
+              commentCount={post.commentCount}
+              badge={post.tags[0]}
+            />
+          ))}
+        </div>
+      )}
     </SiteShell>
   );
 }

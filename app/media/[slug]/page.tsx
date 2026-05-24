@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { SiteShell } from "@/components/layout/site-shell";
-import { Badge } from "@/components/ui/badge";
+import { FeedDetailCard } from "@/components/feed/feed-detail-card";
 import { auth, isVip } from "@/lib/auth";
 import { getArticleBySlug, getArticleMetaBySlug } from "@/lib/data/media";
 import { ARTICLE_PREVIEW_RATIO, SITE_NAME } from "@/lib/constants";
@@ -29,33 +29,38 @@ export default async function MediaDetailPage({
   const previewLength = Math.floor(article.content.length * ARTICLE_PREVIEW_RATIO);
   const displayContent = canReadFull
     ? article.content
-    : article.content.slice(0, previewLength) + "\n\n---\n\n🔒 后续内容需 VIP 会员解锁";
+    : article.content.slice(0, previewLength) +
+      "\n\n---\n\n🔒 后续内容需 VIP 会员解锁";
 
   return (
     <SiteShell>
-      <article className="mx-auto max-w-3xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-2">
-          <h1 className="text-3xl font-bold text-slate-900">{article.title}</h1>
-          {article.isPremium && <Badge variant="warning">VIP 可见</Badge>}
-        </div>
+      <FeedDetailCard
+        backHref="/media"
+        backLabel="返回资讯"
+        community="资讯"
+        communityHref="/media"
+        title={article.title}
+        badge={article.isPremium ? "VIP 可见" : undefined}
+        badgeVariant="warning"
+      >
         {article.excerpt && (
-          <p className="mt-4 text-lg text-slate-500">{article.excerpt}</p>
+          <p className="mb-4 text-sm text-slate-500 sm:text-base">{article.excerpt}</p>
         )}
-        <div className="prose prose-slate mt-8 max-w-none whitespace-pre-wrap">
+        <div className="prose prose-slate max-w-none whitespace-pre-wrap text-sm sm:text-base">
           {displayContent}
         </div>
         {!canReadFull && (
-          <div className="mt-8 rounded-xl border border-amber-200 bg-amber-50 p-6 text-center">
+          <div className="mt-6 rounded-md border border-amber-200 bg-amber-50 p-5 text-center">
             <p className="font-medium text-amber-900">升级 VIP 解锁完整深度报告</p>
             <a
               href="/dashboard"
-              className="mt-3 inline-block rounded-lg bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700"
+              className="mt-3 inline-block rounded-full bg-orange-500 px-4 py-2 text-sm font-bold text-white hover:bg-orange-600"
             >
               了解 VIP 权益
             </a>
           </div>
         )}
-      </article>
+      </FeedDetailCard>
     </SiteShell>
   );
 }

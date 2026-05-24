@@ -10,13 +10,13 @@ export function ToolCard({ tool }: { tool: AiToolPreview }) {
     <Card className="flex flex-col transition-shadow hover:shadow-md">
       <CardHeader>
         <div className="flex items-start justify-between gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-lg font-bold text-indigo-600">
+          <div className="flex h-12 w-12 items-center justify-center rounded-md bg-orange-50 text-lg font-bold text-orange-600">
             {tool.name.charAt(0)}
           </div>
           {tool.isFeatured && <Badge variant="warning">精选</Badge>}
         </div>
         <CardTitle className="mt-3">
-          <Link href={`/hub/${tool.slug}`} className="hover:text-indigo-600">
+          <Link href={`/hub/${tool.slug}`} className="hover:text-orange-600">
             {tool.name}
           </Link>
         </CardTitle>

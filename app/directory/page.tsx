@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { SiteShell } from "@/components/layout/site-shell";
 import { CategoryFilter } from "@/components/tools/category-filter";
-import { ToolCard } from "@/components/tools/tool-card";
+import { FeedCard } from "@/components/feed/feed-card";
+import { FeedSortTabs } from "@/components/feed/feed-sort-tabs";
 import { getApprovedTools } from "@/lib/data/tools";
 import { DIRECTORY_CATEGORIES, SITE_NAME } from "@/lib/constants";
 
@@ -22,35 +23,58 @@ export default async function DirectoryPage({
 
   return (
     <SiteShell>
-      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-        <div className="max-w-2xl">
-          <h1 className="text-3xl font-bold text-slate-900">AI 工具导航</h1>
-          <p className="mt-2 text-slate-500">
-            收录各类跨境 AI 工具，按场景分类，点击直达官网（含 Aff 推广追踪）
-          </p>
-        </div>
+      <div className="mb-3 rounded-md border border-slate-200 bg-white px-3 py-2">
+        <h1 className="text-lg font-bold text-slate-900">r/AI导航</h1>
+        <p className="text-xs text-slate-500">按场景筛选跨境 AI 工具</p>
+      </div>
 
-        <div className="mt-8">
-          <CategoryFilter
-            categories={DIRECTORY_CATEGORIES.map((c) => ({
-              slug: c.slug,
-              name: c.name,
-            }))}
-            activeSlug={category}
-            basePath="/directory"
-          />
-        </div>
+      <FeedSortTabs />
 
-        <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mb-3 rounded-md border border-slate-200 bg-white p-3">
+        <CategoryFilter
+          categories={DIRECTORY_CATEGORIES.map((c) => ({
+            slug: c.slug,
+            name: c.name,
+          }))}
+          activeSlug={category}
+          basePath="/directory"
+        />
+      </div>
+
+      {tools.length === 0 ? (
+        <div className="rounded-md border border-slate-200 bg-white p-8 text-center text-sm text-slate-500">
+          该分类暂无工具，敬请期待。
+        </div>
+      ) : (
+        <div className="space-y-3">
           {tools.map((tool) => (
-            <ToolCard key={tool.id} tool={tool} />
+            <FeedCard
+              key={tool.id}
+              href={`/hub/${tool.slug}`}
+              community={tool.categoryName ?? "AI导航"}
+              communityHref="/directory"
+              time={`${tool.clickCount} 次点击 · ${tool.rating.toFixed(1)} 分`}
+              title={tool.name}
+              body={tool.tagline ?? undefined}
+              voteScore={tool.likeCount}
+              badge={tool.isFeatured ? "精选" : undefined}
+              badgeVariant="warning"
+              footer={
+                <div className="mt-2 flex gap-2">
+                  <a
+                    href={`/go/${tool.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="rounded-full bg-orange-500 px-3 py-1 text-xs font-bold text-white hover:bg-orange-600"
+                  >
+                    直达官网
+                  </a>
+                </div>
+              }
+            />
           ))}
         </div>
-
-        {tools.length === 0 && (
-          <p className="mt-12 text-center text-slate-500">该分类暂无工具，敬请期待。</p>
-        )}
-      </div>
+      )}
     </SiteShell>
   );
 }

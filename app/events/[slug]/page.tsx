@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { SiteShell } from "@/components/layout/site-shell";
+import { FeedDetailCard } from "@/components/feed/feed-detail-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input, Label } from "@/components/ui/input";
@@ -22,23 +22,26 @@ export default async function EventDetailPage({
 
   return (
     <SiteShell>
-      <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
-        <Link href="/events" className="text-sm text-indigo-600 hover:underline">
-          ← 返回活动列表
-        </Link>
-        <h1 className="mt-4 text-3xl font-bold text-slate-900">{event.title}</h1>
-        <p className="mt-4 text-slate-600">{event.description}</p>
-        <p className="mt-2 text-sm text-slate-500">
-          {formatDate(event.startsAt)}
-          {event.location ? ` · ${event.location}` : ""}
-        </p>
+      <FeedDetailCard
+        backHref="/events"
+        backLabel="返回活动列表"
+        community="活动"
+        communityHref="/events"
+        time={formatDate(event.startsAt)}
+        title={event.title}
+        badge={event.location ?? undefined}
+      >
+        <p className="text-slate-600">{event.description}</p>
+        {event.location && (
+          <p className="mt-2 text-sm text-slate-500">地点：{event.location}</p>
+        )}
 
         {event.externalTicketUrl ? (
           <a
             href={event.externalTicketUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-8 inline-block"
+            className="mt-6 inline-block"
           >
             <Button size="lg">
               前往第三方购票
@@ -46,9 +49,9 @@ export default async function EventDetailPage({
             </Button>
           </a>
         ) : (
-          <Card className="mt-8">
+          <Card className="mt-6">
             <CardHeader>
-              <CardTitle>活动报名</CardTitle>
+              <CardTitle className="text-base">活动报名</CardTitle>
             </CardHeader>
             <CardContent>
               <form action="/api/events/register" method="POST" className="space-y-4">
@@ -68,12 +71,14 @@ export default async function EventDetailPage({
                 <Button type="submit" className="w-full">
                   提交报名
                 </Button>
-                <p className="text-xs text-slate-400">提交后工作人员将线下联系确认席位。</p>
+                <p className="text-xs text-slate-400">
+                  提交后工作人员将线下联系确认席位。
+                </p>
               </form>
             </CardContent>
           </Card>
         )}
-      </div>
+      </FeedDetailCard>
     </SiteShell>
   );
 }

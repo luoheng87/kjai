@@ -17,8 +17,8 @@ export function CategoryFilter({
         className={cn(
           "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
           !activeSlug
-            ? "bg-indigo-600 text-white"
-            : "bg-slate-100 text-slate-600 hover:bg-slate-200",
+            ? "bg-orange-500 text-white"
+            : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50",
         )}
       >
         全部
@@ -30,8 +30,8 @@ export function CategoryFilter({
           className={cn(
             "rounded-full px-4 py-1.5 text-sm font-medium transition-colors",
             activeSlug === cat.slug
-              ? "bg-indigo-600 text-white"
-              : "bg-slate-100 text-slate-600 hover:bg-slate-200",
+              ? "bg-orange-500 text-white"
+              : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50",
           )}
         >
           {cat.name}
