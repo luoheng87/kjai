@@ -39,7 +39,7 @@ export default function NewPostPage() {
 
   return (
     <SiteShell>
-      <div className="mx-auto max-w-2xl px-4 py-10">
+      <div className="mx-auto max-w-2xl py-6">
         <Link href="/community" className="text-sm text-indigo-600 hover:underline">
           ← 返回论坛
         </Link>

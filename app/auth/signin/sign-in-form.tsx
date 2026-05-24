@@ -42,7 +42,7 @@ export function SignInForm() {
 
   return (
     <SiteShell variant="simple">
-      <div className="mx-auto flex max-w-md flex-col px-4 py-16">
+      <div className="mx-auto flex max-w-md flex-col py-8">
         <Card>
           <CardHeader>
             <CardTitle>登录</CardTitle>

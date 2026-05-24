@@ -18,7 +18,7 @@ export default async function AdminLayout({
 
   return (
     <SiteShell>
-      <div className="mx-auto flex max-w-7xl gap-8 px-4 py-8 sm:px-6 lg:px-8">
+      <div className="flex gap-6">
         <AdminSidebar />
         <div className="min-w-0 flex-1">
           <div className="mb-6">

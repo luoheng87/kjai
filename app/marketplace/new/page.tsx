@@ -33,7 +33,7 @@ export default function NewListingPage() {
 
   return (
     <SiteShell>
-      <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-2xl py-6">
         <Link href="/marketplace" className="text-sm text-indigo-600 hover:underline">
           ← 返回服务市场
         </Link>
