@@ -16,7 +16,7 @@ export default async function DashboardLayout({
 
   return (
     <SiteShell>
-      <div className="flex gap-6">
+      <div className="flex flex-col gap-6">
         <DashboardSidebar />
         <div className="min-w-0 flex-1">{children}</div>
       </div>

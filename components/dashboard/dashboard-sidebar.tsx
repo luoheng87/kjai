@@ -12,6 +12,7 @@ import {
   Store,
   User,
 } from "lucide-react";
+import { HEADER_HEIGHT } from "@/components/layout/site-container";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -28,36 +29,37 @@ export function DashboardSidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-52 shrink-0">
-      <div className="sticky top-24">
-        <p className="mb-3 flex items-center gap-2 px-3 text-xs font-semibold uppercase tracking-wide text-slate-400">
-          <User className="h-3.5 w-3.5" />
-          会员中心
-        </p>
-        <nav className="space-y-0.5">
-          {NAV.map((item) => {
-            const active = item.exact
-              ? pathname === item.href
-              : pathname.startsWith(item.href);
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-                  active
-                    ? "bg-indigo-50 text-indigo-700"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
-                )}
-              >
-                <Icon className="h-4 w-4 shrink-0" />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-      </div>
-    </aside>
+    <div
+      className="sticky z-10 -mx-1 border-b border-slate-200 bg-white pb-3 pt-1"
+      style={{ top: HEADER_HEIGHT }}
+    >
+      <p className="mb-2 flex items-center gap-2 px-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
+        <User className="h-3.5 w-3.5" />
+        会员中心
+      </p>
+      <nav className="flex gap-1 overflow-x-auto pb-1">
+        {NAV.map((item) => {
+          const active = item.exact
+            ? pathname === item.href
+            : pathname.startsWith(item.href);
+          const Icon = item.icon;
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                "flex shrink-0 items-center gap-2 rounded-full px-3 py-2 text-sm font-medium transition-colors",
+                active
+                  ? "bg-orange-50 text-orange-700"
+                  : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
+              )}
+            >
+              <Icon className="h-4 w-4 shrink-0" />
+              {item.label}
+            </Link>
+          );
+        })}
+      </nav>
+    </div>
   );
 }
