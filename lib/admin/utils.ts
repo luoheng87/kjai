@@ -1,4 +1,5 @@
 import { revalidatePath } from "next/cache";
+import { resolveArticleSlug, slugifyAscii } from "@/lib/slug";
 
 export function revalidateFrontend() {
   const paths = [
@@ -16,22 +17,9 @@ export function revalidateFrontend() {
 }
 
 export function slugify(text: string) {
-  const normalized = text.trim().toLowerCase();
-  const ascii = normalized
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 80);
-
-  if (ascii) return ascii;
-
-  const withCjk = normalized
-    .replace(/[^a-z0-9\u4e00-\u9fa5]+/g, "-")
-    .replace(/^-|-$/g, "")
-    .slice(0, 80);
-
-  if (withCjk && /^[\u4e00-\u9fa5-]+$/.test(withCjk)) {
-    return withCjk;
-  }
-
-  return `article-${Date.now()}`;
+  const ascii = slugifyAscii(text);
+  if (ascii.length >= 2) return ascii;
+  return resolveArticleSlug(text);
 }
+
+export { resolveArticleSlug, suggestArticleSlug, generateRandomSlug } from "@/lib/slug";

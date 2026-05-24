@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { and, eq } from "drizzle-orm";
 import { z } from "zod";
-import { slugify, revalidateFrontend } from "@/lib/admin/utils";
+import { revalidateFrontend, resolveArticleSlug } from "@/lib/admin/utils";
 import { requireMemberApi } from "@/lib/member/guard";
 import { getMemberArticles } from "@/lib/member/data";
 import { moderateContent } from "@/lib/moderation";
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
   try {
     const body = schema.parse(await request.json());
-    const slug = body.slug ? slugify(body.slug) : slugify(body.title);
+    const slug = resolveArticleSlug(body.title, body.slug);
     const fullText = `${body.title} ${body.content}`;
     const mod = await moderateContent("article", "new", fullText);
 

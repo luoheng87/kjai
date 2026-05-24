@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { requireAdminApi } from "@/lib/admin/guard";
-import { slugify, revalidateFrontend } from "@/lib/admin/utils";
+import { revalidateFrontend, resolveArticleSlug } from "@/lib/admin/utils";
 import { requireDb } from "@/lib/db";
 import { articles } from "@/drizzle/schema";
 
@@ -21,9 +21,10 @@ export async function POST(request: Request) {
 
   try {
     const body = schema.parse(await request.json());
+    const slug = resolveArticleSlug(body.title, body.slug);
     await requireDb().insert(articles).values({
       title: body.title,
-      slug: body.slug ? slugify(body.slug) : slugify(body.title),
+      slug,
       excerpt: body.excerpt,
       content: body.content,
       isPremium: body.isPremium ?? false,

@@ -4,24 +4,28 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input, Label, Textarea } from "@/components/ui/input";
+import { ArticleSlugField } from "@/components/forms/article-slug-field";
+import { resolveArticleSlug } from "@/lib/slug";
 
 export function ArticleForm() {
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+  const [title, setTitle] = useState("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setMsg("");
     const form = new FormData(e.currentTarget);
+    const titleValue = String(form.get("title") ?? "");
     const res = await fetch("/api/admin/articles", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        title: form.get("title"),
-        slug: form.get("slug"),
+        title: titleValue,
+        slug: resolveArticleSlug(titleValue, String(form.get("slug") ?? "")),
         excerpt: form.get("excerpt"),
         content: form.get("content"),
         isPremium: form.get("isPremium") === "on",
@@ -32,6 +36,7 @@ export function ArticleForm() {
     if (res.ok) {
       setMsg("发布成功");
       formRef.current?.reset();
+      setTitle("");
       router.refresh();
     } else {
       const data = await res.json().catch(() => ({}));
@@ -43,13 +48,17 @@ export function ArticleForm() {
     <form ref={formRef} onSubmit={handleSubmit} className="space-y-3">
       <div>
         <Label htmlFor="title">标题</Label>
-        <Input id="title" name="title" required className="mt-1" />
+        <Input
+          id="title"
+          name="title"
+          required
+          className="mt-1"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="slug">Slug（可选）</Label>
-          <Input id="slug" name="slug" placeholder="auto-from-title" className="mt-1" />
-        </div>
+        <ArticleSlugField title={title} />
         <div>
           <Label htmlFor="coverUrl">封面图 URL</Label>
           <Input id="coverUrl" name="coverUrl" className="mt-1" />
