@@ -1,0 +1,21 @@
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+import * as schema from "@/drizzle/schema";
+
+import { isDbConfigured } from "@/lib/auth-config";
+
+function createDb() {
+  const url = process.env.DATABASE_URL;
+  if (!isDbConfigured()) return null;
+  const sql = neon(url!);
+  return drizzle(sql, { schema });
+}
+
+export const db = createDb();
+
+export function requireDb() {
+  if (!db) {
+    throw new Error("DATABASE_URL is not configured");
+  }
+  return db;
+}
