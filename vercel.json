@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/sync-clicks",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 2 * * *"
     },
     {
       "path": "/api/cron/check-links",
