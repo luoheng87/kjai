@@ -25,24 +25,26 @@ export function SiteHeader() {
   return (
     <>
       <header className="sticky top-0 z-50 border-b border-slate-300/80 bg-white">
-        <div className={cn("flex h-12 w-full items-center gap-3", SITE_PAGE_GUTTER)}>
-          <button
-            type="button"
-            className="rounded-full p-2 text-slate-700 hover:bg-slate-100 lg:hidden"
-            onClick={() => setMobileOpen(true)}
-            aria-label="打开菜单"
-          >
-            <Menu className="h-5 w-5" />
-          </button>
+        <div className={cn("relative grid h-[55px] w-full grid-cols-[1fr_auto_1fr] items-center gap-3", SITE_PAGE_GUTTER)}>
+          <div className="flex min-w-0 items-center gap-2">
+            <button
+              type="button"
+              className="rounded-full p-2 text-slate-700 hover:bg-slate-100 lg:hidden"
+              onClick={() => setMobileOpen(true)}
+              aria-label="打开菜单"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
 
-          <Link href="/" className="flex shrink-0 items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white">
-              <Sparkles className="h-4 w-4" />
-            </span>
-            <span className="hidden font-bold text-slate-900 sm:inline">{SITE_NAME}</span>
-          </Link>
+            <Link href="/" className="flex shrink-0 items-center gap-2">
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-orange-500 text-white">
+                <Sparkles className="h-4 w-4" />
+              </span>
+              <span className="hidden font-bold text-slate-900 sm:inline">{SITE_NAME}</span>
+            </Link>
+          </div>
 
-          <form action="/directory" className="hidden min-w-0 flex-1 md:block">
+          <form action="/directory" className="hidden w-full max-w-[min(780px,60vw)] md:block">
             <div className="relative">
               <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
               <input
@@ -54,7 +56,7 @@ export function SiteHeader() {
             </div>
           </form>
 
-          <div className="ml-auto flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center justify-end gap-1 sm:gap-2">
             <Link href="/community/new" className="hidden sm:block">
               <Button
                 size="sm"
